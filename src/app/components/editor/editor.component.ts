@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from "@angular/core";
+import * as monaco from 'monaco-editor';
 
 declare var window: any;
 
@@ -11,8 +12,7 @@ export class NEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() textToAdd: string = '';
   @ViewChild('editorContainer') editorContainer: ElementRef;
 
-  private editor: any = null;
-  private model: any = null;
+  private editor: any;
 
   public options = {
     language: 'sql',
@@ -49,12 +49,12 @@ export class NEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     const _textToAdd = changes['textToAdd'];    
-    // this.text = `${this.text}${_textToAdd.currentValue}`;
     if (this.editor) {
-      const model = this.editor.getModel();
+      const model: monaco.editor.ITextModel = this.editor.getModel();
+      const existingText = model.getValue();
       model.pushEditOperations(
         [],
-        [{ range: model.getFullModelRange(), text: _textToAdd.currentValue }],
+        [{ range: model.getFullModelRange(), text: `${existingText}${_textToAdd.currentValue}` }],
         () => null,
     );
     }
