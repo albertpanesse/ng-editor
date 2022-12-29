@@ -16,8 +16,6 @@ export class NEditorComponent implements OnChanges, AfterViewInit {
 
   private editor: any;
 
-  constructor() {}
-
   ngOnChanges(changes: SimpleChanges): void {
     const textToAddObj = changes['textToAdd']; 
     const textToAdd = textToAddObj.currentValue;
